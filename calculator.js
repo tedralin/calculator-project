@@ -9,12 +9,13 @@ if (!num1 || !num2) {
     alert ("First and Third Parameters should be numbers");
 };
 
-const validOperators = ["*", "+", "-", "/"];
+// -- squareroot is alt+251
+const validOperators = ["*", "+", "-", "/", "√", "%"];
 
 if (validOperators.includes (operator)) {
     // continue;
 } else {
-    alert ("Invalid Operator: valid operators are *, +, -, /");
+    alert ("Invalid Operator: valid operators are *, +, -, /, √, %");
 };
 
 
@@ -33,6 +34,12 @@ const getProduct = (num1, num2) => {
     return num1 * num2;50
 };
 
+const getPercentage = (num1, num2) => {
+    console.log (`getPercentage: Num1 is ${num1} and Num2 is ${num2}`);    
+    return num1 * num2 / 100;
+};
+
+
 const getQuotient = (num1, num2) => {
     console.log (`getQuotient: Num1 is ${num1} and Num2 is ${num2}`);    
     if (num2 === 0) {
@@ -40,6 +47,11 @@ const getQuotient = (num1, num2) => {
     }  else {
         return num1 / num2;
     }
+};
+
+const getSquareRoot = (num1) => {
+    console.log (`getSquareRoot: Num1 is ${num1}`);    
+    return Math.sqrt(num1);
 };
 
 const calculateNumbers = (num1, operator, num2) => {
@@ -57,6 +69,12 @@ const calculateNumbers = (num1, operator, num2) => {
             break;
         case "/":
             total = getQuotient (num1, num2);
+            break;
+        case "%":
+            total = getPercentage (num1, num2);
+            break;
+        case "√":
+            total = getSquareRoot (num1);
             break;
     }
     return total;
