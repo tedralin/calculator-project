@@ -1,9 +1,6 @@
-const num1 = Number(prompt("First number: "));
-const operator = prompt("Operator: ");
-const num2 = Number(prompt("Second number: "));
 
-console.log (`Num1 is ${num1} with a type of ${typeof num1}`)
-console.log (`Num2 is ${num2} with a type of ${typeof num2}`)
+
+
 
 if (!num1 || !num2) {
     alert ("First and Third Parameters should be numbers");
