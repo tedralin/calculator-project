@@ -1,53 +1,77 @@
-* { padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family:Arial, Helvetica, sans-serif;
-    font-size: 25px;}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+}
 
-    div:link, div:visited {
-        text-shadow: lightblue;
-    }
-    div:hover {
-        font-weight: bold;
-    }
+.button:link, .button:visited {
+  text-shadow: lightblue;
+}
 
-    body {
-        background-color: #869D96;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        padding: 20px;
-    }
-    .display-box {
-        border: 1px solid white;
-        height: 50px;
-        padding: 20px;
-    }
+.button:hover {
+  font-weight: bold;
+}
 
-    .button-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        padding: 10px;
-        /* margin: 20px; */
-    }
-    .button {
-        border: 1px solid white;
-        background-image: gray;
-        border-radius: 50%;
-        margin: 10px;
-        padding: 10px;
-    }
+main {
+  border: 5px solid ivory;
+  margin: 5px;
+}
 
-    .button-gray {
-        background-color: gray;
-    }
+body {
+  background-color: #869D96;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
 
-    .button-orange {
-        background-color: orange;
-    }
+.display-box {
+  border: 1px solid white;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: end;
+}
+.display-box__entry {
+  height: 20px;
+  width: 100%;
+  font-size: 15px;
+  padding: 0 5px;
+}
+.display-box__result {
+  width: 100%;
+  padding: 0 5px;
+}
 
-    .button-dark {
-        background-color: lightblue;
-    }
+.button-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  padding: 10px;
+  /* margin: 20px; */
+}
+
+.button {
+  border: 1px solid white;
+  background-image: gray;
+  border-radius: 50%;
+  margin: 10px;
+  padding: 10px;
+}
+
+.button-gray {
+  background-color: gray;
+}
+
+.button-orange {
+  background-color: orange;
+}
+
+.button-dark {
+  background-color: lightblue;
+}/*# sourceMappingURL=stylesheet.css.map */
