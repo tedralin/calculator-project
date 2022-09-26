@@ -41,8 +41,9 @@ const getDifference = (num1, num2) => {
 };
 
 const getProduct = (num1, num2) => {
-    console.log (`getProduct: Num1 is ${num1} and Num2 is ${num2}`);    
-    return num1 * num2;
+    console.log (`getProduct: Num1 is ${num1} and Num2 is ${num2}`);  
+    // Get precision  
+    return Math.round(num1 * num2);
 };
 
 const getPercentage = (num1, num2) => {
@@ -60,28 +61,25 @@ const getQuotient = (num1, num2) => {
     }
 };
 
-const getSquareRoot = (num1) => {
-    console.log (`getSquareRoot: Num1 is ${num1}`);    
-    return Math.sqrt(num1);
-};
-
-
 const calculateNumbers = (firstNumberStr, operator, secondNumberStr) => {
     console.log (`calculateNumbers: Num1 is ${firstNumberStr} and Num2 is ${secondNumberStr} with Operator of ${operator}`) ;
     // Parameters are number in String format so we need to convert first
     const num1 = Number(firstNumberStr);
     const num2 = Number(secondNumberStr);
 
-    if (!num1 || !num2) {
-        alert ("First and Third Parameters should be numbers");
+    if (!num1) {
+        alert ("First Parameters should be a number");
+        return "error"
+    } else if (!num2) {
+        alert ("Third Parameter should be a number");
         return "error";
     };
 
     // -- squareroot is alt+251
-    const validOperators = ["x", "+", "-", "/", "√", "%"];
+    const validOperators = ["x", "+", "-", "÷", "√", "%"];
 
     if (!validOperators.includes(operator)) {
-        alert ("Invalid Operator: valid operators are x, +, -, /, √, %");
+        alert ("Invalid Operator: valid operators are x, +, -, ÷, √, %");
         return "error";
     };
 
@@ -96,14 +94,11 @@ const calculateNumbers = (firstNumberStr, operator, secondNumberStr) => {
         case "x":
             total = getProduct (num1, num2);
             break;
-        case "/":
+        case "÷":
             total = getQuotient (num1, num2);
             break;
         case "%":
             total = getPercentage (num1, num2);
-            break;
-        case "√":
-            total = getSquareRoot (num1);
             break;
     }
     console.log (`Total is ${total}`);
@@ -134,6 +129,19 @@ const assignAndCalculate = (buttonValue) => {
     return ;
 }
 
+const getSquareRoot = (sqrtNum) => {
+    console.log (`getSquareRoot: Num1 is ${sqrtNum}`); 
+    if (sqrtNum < 0) {
+        alert ("Square Root cannot be applied to a negative number");
+        return "error";
+    };
+    const sqrtResult = Math.sqrt(Number(sqrtNum));
+    displayResult.innerHTML = sqrtResult;
+    return sqrtResult;
+};
+
+
+
 buttonTexts.forEach((button) => {
     
     button.addEventListener("click", () => {
@@ -160,7 +168,7 @@ buttonTexts.forEach((button) => {
             case "+":
             case "-":
             case "x":
-            case "/":                        
+            case "÷":                        
             case "%":   
                 assignAndCalculate(buttonValue);
                 appendValueToDisplayText(buttonValue);
@@ -168,9 +176,7 @@ buttonTexts.forEach((button) => {
                 operator = buttonValue;
                 break;
             case "√":            
-                appendValueToDisplayText(buttonValue);
-                firstNumberStr = numberSign + numberStr;            
-                console.log ("SQR: I only need one number so I need to calculate first");
+                numberStr = getSquareRoot(numberSign+numberStr);
                 break;
             case "±":
                 // switch signs if clicked

@@ -61,12 +61,16 @@
         padding: 10px;
     }
 
-    .button-gray {
+    .button-number, #button-sign {
         background-color: gray;
     }
 
-    .button-orange {
+    .button-operator {
         background-color: orange;
+    }
+
+    .button-equal {
+        background-color: yellowgreen;
     }
 
     .button-dark {
