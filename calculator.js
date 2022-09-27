@@ -10,16 +10,17 @@ const buttonEq = document.querySelector("#button-equal");
 const buttonSign = document.querySelector("#button-sign");
 const displayText = document.getElementsByClassName("display-box__entry")[0];
 const displayResult = document.getElementsByClassName("display-box__result")[0];
-console.log (`display box result has ${displayResult}`)
 
 
 var firstNumberStr = "";  //first operand for calculateNumbers
 var secondNumberStr = ""; //second operand for calculateNumbers
-var numberStr = "";  //working current number string
-var numberSign = "+"; //check for positive/negative
 var equationStr = "";
+var numberStr = "";  //working current number string; used for display
+// var numberCalc = ""; // current number will be used for calc (value after √ or %)
+var numberSign = "+"; //check for positive/negative
 var operator = ""
 var isDotPresent = false;
+var subTotal = "";
 
 const initNumString = () => {
     numberStr = "";
@@ -31,8 +32,8 @@ const initVariables = () => {
     firstNumberStr = "";
     secondNumberStr = "";
     operator = "";
-    isDotPresent = false;
     equationStr = "";
+    isDotPresent = false;
     initNumString();
 } ;
 
@@ -49,7 +50,7 @@ const getDifference = (num1, num2) => {
 const getProduct = (num1, num2) => {
     console.log (`getProduct: Num1 is ${num1} and Num2 is ${num2}`);  
     // Get precision  
-    return Math.round(num1 * num2);
+    return (num1 * num2);
 };
 
 const getQuotient = (num1, num2) => {
@@ -68,17 +69,17 @@ const calculateNumbers = (firstNumberStr, operator, secondNumberStr) => {
     const num2 = Number(secondNumberStr);
 
     if (!num1) {
-        alert ("First Parameters should be a number");
+        alert ("First Parameter should be a number");
         return "error"
     } else if (!num2) {
         alert ("Third Parameter should be a number");
         return "error";
     };
 
-    const validOperators = ["x", "+", "-", "÷", "%"];
+    const validOperators = ["x", "+", "-", "÷"];
 
     if (!validOperators.includes(operator)) {
-        alert ("Invalid Operator: valid operators are x, +, -, ÷, %");
+        alert ("Invalid Operator: valid operators are x, +, -, ÷");
         return "error";
     };
 
@@ -104,20 +105,81 @@ const calculateNumbers = (firstNumberStr, operator, secondNumberStr) => {
     return total;
 };
 
-const appendValueToDisplayText = (addTextValue) => {
-    numberStr += addTextValue;
-    equationStr += addTextValue;
-    displayText.innerHTML = equationStr;
+const formatSignedNumStr = () => {
+    if (numberSign === "-") {
+        return `(${numberSign}${numberStr})`;
+    } else {
+        return  numberStr;
+    }
 }
 
+const assignNumStrfromSubTotal = () => {
+    // use previous value from SubTotal
+    if (subTotal < 0) {
+        numberStr = Math.abs(subTotal);
+        numberSign = "-";
+    } else if (subTotal >=0 ) {
+        numberStr = subTotal;
+    }
+    
+    // numberCalc = numberStr;
+}
+
+const appendNumStrToDisplayText = (buttonVal) => {
+    const strNumButtons = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ""];
+    const validSignStr = "±";
+
+    // console.log (`AppenNumStr start: equation str = ${equationStr} for button ${buttonVal}; number Calc = ${numberCalc}`);
+    
+    if (strNumButtons.includes (buttonVal)) {numberStr += buttonVal;};
+    const signedNumStr = formatSignedNumStr();
+    displayText.innerHTML = equationStr + signedNumStr;
+    // console.log (`AppendNumStr End: equation str = ${equationStr}; numerStr = ${numberStr}; number Calc = ${numberCalc}`);
+    return;
+}
+
+const appendOperToDisplayText = (buttonVal) => {
+    const strValidOperands = ["+", "-", "x", "÷"];
+
+    // console.log (`AppendOperStr start: equation str = ${equationStr} for button ${buttonVal}; number Calc = ${numberCalc}`);
+    if (!strValidOperands.includes (buttonVal)) {return;}
+    const signedNumStr = formatSignedNumStr();
+    equationStr += signedNumStr + buttonVal;
+    displayText.innerHTML = equationStr;
+    // console.log (`AppendOperStr End:equation str = ${equationStr} for button ${buttonVal}; number Calc = ${numberCalc}`);        
+}
+
+const appendSqrtToDisplayText = (buttonVal) => {
+    const sqrt = "√";
+
+    // console.log (`AppendSqrt start: equation str = ${equationStr} for button ${buttonVal}; number Calc = ${numberCalc}`);
+    if (buttonVal != sqrt) {return;}
+    displayText.innerHTML = equationStr + `${sqrt}(${numberStr})`;
+    
+    // console.log (`AppendSqrt End: equation str = ${equationStr}; New numberStr is = ${numberStr}; number Calc = ${numberCalc}`);
+}
+
+const appendPctToDisplayText = (buttonVal) => {
+    const pct = "%";
+    // console.log (`AppendPct start: equation str = ${equationStr} for button ${buttonVal}; number Calc = ${numberCalc}`);
+    if (buttonVal != pct) {return;}
+    displayText.innerHTML = equationStr + `${pct}(${numberStr})`;
+    
+    // console.log (`AppendPctt End: equation str = ${equationStr}; New numberStr is = ${numberStr}; number Calc = ${numberCalc}`);
+}
+
+
 const assignAndCalculate = (buttonValue) => {
-    console.log (`firstNumberStr is ${firstNumberStr} with operatorValue of ${buttonValue} `)
+    console.log (`Start: firstNumberStr is ${firstNumberStr} with operatorValue of ${buttonValue} `)
     if (firstNumberStr === "") {
+        // firstNumberStr = numberSign + numberCalc;
         firstNumberStr = numberSign + numberStr;
+        console.log (`Mid: firstNumberStr is ${firstNumberStr} with operatorValue of ${buttonValue} `)        
         if (buttonValue != "=") {
-            return;
+            return false;
         };
     } else  {
+        // secondNumberStr = numberSign + numberCalc;
         secondNumberStr = numberSign + numberStr;
     };
     const totalStr = calculateNumbers(firstNumberStr, operator, secondNumberStr);
@@ -125,14 +187,15 @@ const assignAndCalculate = (buttonValue) => {
     if (buttonValue != "=") {
         firstNumberStr = totalStr
     }
-    return ;
+    console.log (`End: firstNumberStr is ${firstNumberStr} with operatorValue of ${buttonValue} `)        
+    return totalStr;
 }
 
 const getSquareRoot = (sqrtNum) => {
     console.log (`getSquareRoot: Num1 is ${sqrtNum}`); 
     if (sqrtNum < 0) {
         alert ("Square Root cannot be applied to a negative number");
-        return "error";
+        return false;
     };
     const sqrtResult = Math.sqrt(Number(sqrtNum));
     displayResult.innerHTML = sqrtResult;
@@ -145,12 +208,10 @@ const getPercentage = (num1, num2) => {
 };
 
 
-// Append Numbers
+// Numbers
  buttonNumbers.forEach((buttonNum) => {
     buttonNum.addEventListener("click", () => {
         const buttonNumValue = buttonNum.textContent;
-        console.log("Button Num Value is " + buttonNumValue)
-        
         switch(buttonNumValue)  {
             case ".":
                 if (isDotPresent) {break;}
@@ -168,7 +229,7 @@ const getPercentage = (num1, num2) => {
             case "7":
             case "8":
             case "9":
-                appendValueToDisplayText(buttonNumValue);
+                appendNumStrToDisplayText(buttonNumValue);
         }
     })  
 })
@@ -181,19 +242,24 @@ buttonOperators.forEach((buttonOper) => {
     // Move numbers to string array
     // calculate partial result
     // initialize num string
+        // assignAndCalculate(buttonOperValue);
 
-        assignAndCalculate(buttonOperValue);
-        appendValueToDisplayText(buttonOperValue);
+        if (numberStr === "" && subTotal !="" && firstNumberStr === "") {
+            assignNumStrfromSubTotal();
+        };
+        assignAndCalculate(buttonOperValue);        
+        appendOperToDisplayText(buttonOperValue);
         initNumString();
         operator = buttonOperValue;
-        console.log (buttonOperValue);
+
     })  
 })
 
 // Equal
 buttonEq.addEventListener("click", () => {
     console.log ("Equals : Calculate");
-    assignAndCalculate(buttonEq.textContent);
+    // formatCalcNum();
+    subTotal = assignAndCalculate(buttonEq.textContent);
     initVariables();
 }
 )
@@ -202,29 +268,40 @@ buttonEq.addEventListener("click", () => {
 buttonSign.addEventListener("click", () => {
     console.log ("Switch Sign");
     numberSign = (numberSign == "+") ? "-" : "+";
+    appendNumStrToDisplayText(buttonSign.textContent)
 }
 )
 
 
 // Square Root
 buttonSqrt.addEventListener("click", () => {
-    numberStr = getSquareRoot(numberSign+numberStr);
+    appendSqrtToDisplayText(buttonSqrt.textContent);
+    const sqrtResult = getSquareRoot(numberSign+numberStr);
+    if (sqrtResult) {
+        numberStr = sqrtResult;
+    };
+
 }
 )
 
 // Percentage
 buttonPct.addEventListener("click", () => {
+    appendPctToDisplayText(buttonPct.textContent);
     const numValue2 = numberSign + numberStr;
-    numberStr = getPercentage(firstNumberStr, numValue2);
+    const pctResult  = getPercentage(firstNumberStr, numValue2);
+    if (pctResult) {
+        numberStr = pctResult;
+    }
 }
 )
 
 // Clear Entry
 buttonClear.addEventListener("click", () => {
     initNumString();
+    appendNumStrToDisplayText("");
 }
 )
 
-console.log (`NumberStr = ${numberStr}; FirstNum = ${firstNumberStr}; Operator = ${operator}; SecondNum = ${secondNumberStr} `);
+
 
 
