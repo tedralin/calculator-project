@@ -1,0 +1,23 @@
+{
+  "name": "calculator-project",
+  "version": "1.0.0",
+  "description": "Week 2: Calculator Project using javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tedralin/calculator-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tedralin/calculator-project/issues"
+  },
+  "homepage": "https://github.com/tedralin/calculator-project#readme",
+  "devDependencies": {
+    "cypress": "^10.9.0"
+  }
+}
